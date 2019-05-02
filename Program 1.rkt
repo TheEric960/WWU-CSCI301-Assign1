@@ -23,3 +23,9 @@
   (lambda (n)
     (cond ((and (inForm? n) (prime? n)) n)
           (else (getNextInForm (+ n 1))))))
+
+(define getNumList
+  (lambda (n)
+    (let f ((i 0) (L '()) (x (getNextInForm 4)))
+      (cond ((>= i n) L)
+            (else (f (+ i 1) (append L (list x)) (getNextInForm (+ x 1))))))))
