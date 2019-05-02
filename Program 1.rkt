@@ -18,3 +18,8 @@
   (lambda (n)
     (if (eq? 0 (remainder (- n 1) 4))
         #t #f)))
+
+(define getNextInForm
+  (lambda (n)
+    (cond ((and (inForm? n) (prime? n)) n)
+          (else (getNextInForm (+ n 1))))))
