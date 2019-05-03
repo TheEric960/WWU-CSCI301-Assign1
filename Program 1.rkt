@@ -40,7 +40,7 @@
     (map (lambda x (append x (find-roots (car x)))) (gen-ranged-list a b))))
 
 (define get-file
-  (let ((p (open-input-file "primes4np1")))
+  (let ((p (open-input-file "range")))
     (let f ((x (read p)))
       (if (eof-object? x)
           (begin
@@ -48,6 +48,16 @@
             '())
           (cons x (f (read p)))))))
 
-(let ((f get-file))
-  (display (list-with-roots (car f) (car (cdr f)))))
+(define get-list
+  (let ((f get-file))
+    (list-with-roots (car f) (car (cdr f)))))
+
+(let ((p (open-output-file "primes4np1")))
+  (let f ((ls get-list))
+    (if (not (null? ls))
+        (begin
+          (write (car ls) p)
+          (newline p)
+          (f (cdr ls)))))
+  (close-output-port p))
 
