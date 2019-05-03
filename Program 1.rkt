@@ -29,3 +29,13 @@
     (let f ((i 0) (L '()) (x (getNextInForm 4)))
       (cond ((>= i n) L)
             (else (f (+ i 1) (append L (list x)) (getNextInForm (+ x 1))))))))
+
+(define findRoots
+  (lambda (n)
+    (define roots
+      (lambda (i j)
+        (let ((ttl (+ (* i i) (* j j))))
+          (cond ((eq? ttl n) (list i j))
+                ((> ttl n) (roots (+ i 1) (set! j 0)))
+                (else (roots i (+ j 1)))))))
+    (roots 1 1)))
