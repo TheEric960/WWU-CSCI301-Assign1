@@ -38,3 +38,4 @@
 (define list-with-roots
   (lambda (a b)
     (map (lambda x (append x (find-roots (car x)))) (gen-ranged-list a b))))
+
