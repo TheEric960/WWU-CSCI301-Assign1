@@ -1,10 +1,5 @@
 #lang R5RS
 
-(define length
-  (lambda (L)
-    (cond ((null? L) 0)
-          (else (+ 1 (length (cdr L)))))))
-
 (define prime?
   (lambda (n)
     (cond ((or (eq? 2 n) (eq? 3 n)) #t)
@@ -14,23 +9,23 @@
                         ((eq? (remainder n i) 0) #f)
                         (else (f (+ i 1)))))))))
 
-(define inForm?
+(define in-form?
   (lambda (n)
     (if (eq? 0 (remainder (- n 1) 4))
         #t #f)))
 
-(define getNextInForm
+(define get-next-in-form
   (lambda (n)
-    (cond ((and (inForm? n) (prime? n)) n)
-          (else (getNextInForm (+ n 1))))))
+    (cond ((and (in-form? n) (prime? n)) n)
+          (else (get-next-in-form (+ n 1))))))
 
-(define getNumList
+(define get-num-list
   (lambda (n)
-    (let f ((i 0) (L '()) (x (getNextInForm 4)))
+    (let f ((i 0) (L '()) (x (get-next-in-form 4)))
       (cond ((>= i n) L)
-            (else (f (+ i 1) (append L (list x)) (getNextInForm (+ x 1))))))))
+            (else (f (+ i 1) (append L (list x)) (get-next-in-form (+ x 1))))))))
 
-(define findRoots
+(define find-roots
   (lambda (n)
     (define roots
       (lambda (i j)
@@ -40,6 +35,6 @@
                 (else (roots i (+ j 1)))))))
     (roots 1 1)))
 
-(define listWithRoots
+(define list-with-roots
   (lambda (n)
-    (map (lambda x (append x (findRoots (car x)))) (getNumList n))))
+    (map (lambda x (append x (find-roots (car x)))) (get-num-list n))))
