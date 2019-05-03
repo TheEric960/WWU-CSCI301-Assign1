@@ -48,3 +48,6 @@
             '())
           (cons x (f (read p)))))))
 
+(let ((f get-file))
+  (display (list-with-roots (car f) (car (cdr f)))))
+
