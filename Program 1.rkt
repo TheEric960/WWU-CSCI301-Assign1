@@ -36,6 +36,10 @@
       (lambda (i j)
         (let ((ttl (+ (* i i) (* j j))))
           (cond ((eq? ttl n) (list i j))
-                ((> ttl n) (roots (+ i 1) (set! j 0)))
+                ((> ttl n) (roots (+ i 1) 1))
                 (else (roots i (+ j 1)))))))
     (roots 1 1)))
+
+(define listWithRoots
+  (lambda (n)
+    (map (lambda x (append x (findRoots (car x)))) (getNumList n))))
