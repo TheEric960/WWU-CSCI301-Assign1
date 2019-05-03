@@ -19,11 +19,11 @@
     (cond ((and (in-form? n) (prime? n)) n)
           (else (get-next-in-form (+ n 1))))))
 
-(define get-num-list
-  (lambda (n)
-    (let f ((i 0) (L '()) (x (get-next-in-form 4)))
-      (cond ((>= i n) L)
-            (else (f (+ i 1) (append L (list x)) (get-next-in-form (+ x 1))))))))
+(define gen-ranged-list
+  (lambda (a b)
+    (let f ((L '()) (x (get-next-in-form a)))
+      (cond ((> x b) L)
+            (else (f (append L (list x)) (get-next-in-form (+ x 1))))))))
 
 (define find-roots
   (lambda (n)
@@ -36,5 +36,5 @@
     (roots 1 1)))
 
 (define list-with-roots
-  (lambda (n)
-    (map (lambda x (append x (find-roots (car x)))) (get-num-list n))))
+  (lambda (a b)
+    (map (lambda x (append x (find-roots (car x)))) (gen-ranged-list a b))))
