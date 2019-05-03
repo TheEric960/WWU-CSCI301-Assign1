@@ -39,3 +39,12 @@
   (lambda (a b)
     (map (lambda x (append x (find-roots (car x)))) (gen-ranged-list a b))))
 
+(define get-file
+  (let ((p (open-input-file "primes4np1")))
+    (let f ((x (read p)))
+      (if (eof-object? x)
+          (begin
+            (close-input-port p)
+            '())
+          (cons x (f (read p)))))))
+
