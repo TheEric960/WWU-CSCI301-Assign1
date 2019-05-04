@@ -65,7 +65,7 @@
           (begin
             (map (lambda (x) (display (string-append (number->string x) " ") p)) (car ls))
             (newline p)
-            (write-to-file (cdr ls)))) "something went wrong"))
+            (write-to-file (cdr ls))) "something went wrong")))
   (write-to-file get-list)
   (close-output-port p))
 
