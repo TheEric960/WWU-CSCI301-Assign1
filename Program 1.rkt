@@ -5,11 +5,11 @@
     (cond ((or (eq? 2 n) (eq? 3 n)) #t)
           ((or (< n 2) (eq? 0 (remainder n 2))) #f)
           (else (let ((i 2))
-                  (define f
+                  (define other-nums
                     (lambda (j)
                       (cond ((>= j (/ n 2)) #t)
                             ((eq? (remainder n j) 0) #f)
-                            (else (f (+ j 1)))))) (f i))))))
+                            (else (other-nums (+ j 1)))))) (other-nums i))))))
 
 (define in-form?
   (lambda (n)
@@ -23,11 +23,11 @@
 
 (define gen-ranged-list
   (lambda (a b)
-    (define f
+    (define form-list
       (lambda (L x)
         (cond ((> x b) L)
-              (else (f (append L (list x)) (get-next-in-form (+ x 1)))))))
-    (f '() (get-next-in-form a))))
+              (else (form-list (append L (list x)) (get-next-in-form (+ x 1)))))))
+    (form-list '() (get-next-in-form a))))
 
 (define find-roots
   (lambda (n)
@@ -45,27 +45,27 @@
 
 (define get-file
   (let ((p (open-input-file "range")))
-    (define f
+    (define read-file
       (lambda (x)
         (if (eof-object? x)
             (begin
               (close-input-port p)
               '())
-            (cons x (f (read p))))))
-    (f (read p))))
+            (cons x (read-file (read p))))))
+    (read-file (read p))))
 
 (define get-list
-  (let ((f get-file))
-    (list-with-roots (car f) (car (cdr f)))))
+  (let ((file get-file))
+    (list-with-roots (car file) (car (cdr file)))))
 
 (let ((p (open-output-file "primes4np1")))
-  (define f
+  (define write-to-file
     (lambda (ls)
       (if (not (null? ls))
           (begin
             (map (lambda (x) (display (string-append (number->string x) " ") p)) (car ls))
             (newline p)
-            (f (cdr ls))))))
-  (f get-list)
+            (write-to-file (cdr ls))))))
+  (write-to-file get-list)
   (close-output-port p))
 
