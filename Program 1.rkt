@@ -56,7 +56,7 @@
   (let f ((ls get-list))
     (if (not (null? ls))
         (begin
-          (write (car ls) p)
+          (map (lambda (x) (write (string-append (number->string x) " ") p)) (car ls))
           (newline p)
           (f (cdr ls)))))
   (close-output-port p))
