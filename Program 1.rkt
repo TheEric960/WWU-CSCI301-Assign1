@@ -4,10 +4,12 @@
   (lambda (n)
     (cond ((or (eq? 2 n) (eq? 3 n)) #t)
           ((or (< n 2) (eq? 0 (remainder n 2))) #f)
-          (else (let f ((i 2))
-                  (cond ((>= i (/ n 2)) #t)
-                        ((eq? (remainder n i) 0) #f)
-                        (else (f (+ i 1)))))))))
+          (else (let ((i 2))
+                  (define f
+                    (lambda (j)
+                      (cond ((>= j (/ n 2)) #t)
+                            ((eq? (remainder n j) 0) #f)
+                            (else (f (+ j 1)))))) (f i))))))
 
 (define in-form?
   (lambda (n)
@@ -21,9 +23,11 @@
 
 (define gen-ranged-list
   (lambda (a b)
-    (let f ((L '()) (x (get-next-in-form a)))
-      (cond ((> x b) L)
-            (else (f (append L (list x)) (get-next-in-form (+ x 1))))))))
+    (define f
+      (lambda (L x)
+        (cond ((> x b) L)
+              (else (f (append L (list x)) (get-next-in-form (+ x 1)))))))
+    (f '() (get-next-in-form a))))
 
 (define find-roots
   (lambda (n)
@@ -41,23 +45,27 @@
 
 (define get-file
   (let ((p (open-input-file "range")))
-    (let f ((x (read p)))
-      (if (eof-object? x)
-          (begin
-            (close-input-port p)
-            '())
-          (cons x (f (read p)))))))
+    (define f
+      (lambda (x)
+        (if (eof-object? x)
+            (begin
+              (close-input-port p)
+              '())
+            (cons x (f (read p))))))
+    (f (read p))))
 
 (define get-list
   (let ((f get-file))
     (list-with-roots (car f) (car (cdr f)))))
 
 (let ((p (open-output-file "primes4np1")))
-  (let f ((ls get-list))
-    (if (not (null? ls))
-        (begin
-          (map (lambda (x) (display (string-append (number->string x) " ") p)) (car ls))
-          (newline p)
-          (f (cdr ls)))))
+  (define f
+    (lambda (ls)
+      (if (not (null? ls))
+          (begin
+            (map (lambda (x) (display (string-append (number->string x) " ") p)) (car ls))
+            (newline p)
+            (f (cdr ls))))))
+  (f get-list)
   (close-output-port p))
 
