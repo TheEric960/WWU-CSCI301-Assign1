@@ -9,7 +9,8 @@
                     (lambda (j)
                       (cond ((>= j (/ n 2)) #t)
                             ((eq? (remainder n j) 0) #f)
-                            (else (other-nums (+ j 1)))))) (other-nums i))))))
+                            (else (other-nums (+ j 1))))))
+                  (other-nums i))))))
 
 (define in-form?
   (lambda (n)
